@@ -29,6 +29,11 @@ This repo contains a Postman collectoin and environment configuration for invoki
 
 3. Open Postman and import `appid-production-us-south.postman_environment.json` and `app-id.postman_colletion.json`. 
 
-4. Make sure `
+4. Make sure `appid-production-us-south` environment is selected
 
+## Usage
+
+Use the APIs according to your scenarios. Note that many values are taken from the environment to simplify API invocation workflows. E.g. once you make the `App ID -> Cloud IAM -> Get Cloud IAM Token` request, the retrieved token will be saved in the envornment and used for all subsequent requests to management API automatically. Same goes for many other workflows. You can see the `Test` section of relevant requests to see the logic. 
+
+Happy App IDing!
 
