@@ -1,0 +1,2642 @@
+{
+	"info": {
+		"_postman_id": "029bedf3-6c36-4eeb-85c6-f79d7454950a",
+		"name": "App ID",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Cloud IAM",
+			"item": [
+				{
+					"name": "Get Cloud IAM Token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "4e4e4827-f4db-489c-a769-bd0473274df0",
+								"exec": [
+									"pm.test(\"Response is OK\", function(){",
+									"   pm.expect(pm.response.code).to.be.equal(200) ",
+									"   pm.expect(pm.response.json()).to.be.an('object');",
+									"   pm.expect(pm.response.json()).to.have.a.property(\"access_token\"); ",
+									"    pm.environment.set(\"IBMCLOUD_IAM_TOKEN\", pm.response.json().access_token);",
+									"});",
+									"",
+									"",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/x-www-form-urlencoded"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "urn:ibm:params:oauth:grant-type:apikey",
+									"type": "text"
+								},
+								{
+									"key": "apikey",
+									"value": "{{IBMCLOUD_API_KEY}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{IBMCLOUD_IAM_SERVER_HOST}}/oidc/token",
+							"host": [
+								"{{IBMCLOUD_IAM_SERVER_HOST}}"
+							],
+							"path": [
+								"oidc",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Management",
+			"item": [
+				{
+					"name": "Applications",
+					"item": [
+						{
+							"name": "/applications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "17b65a37-4523-4e92-9504-f320e6279307",
+										"exec": [
+											"var applications = pm.response.json().applications;",
+											"applications.forEach(function(app){",
+											"    if (app.name == pm.environment.get(\"APPID_APPLICATION_NAME\")){",
+											"        pm.environment.set(\"APPID_APPLICATION_CLIENT_ID\", app.clientId);             ",
+											"    }",
+											"});",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/applications",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/applications",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "17b65a37-4523-4e92-9504-f320e6279307",
+										"exec": [
+											"var app = pm.response.json();",
+											"if (app.name == pm.environment.get(\"APPID_APPLICATION_NAME\")){",
+											"    pm.environment.set(\"APPID_APPLICATION_CLIENT_ID\", app.clientId);",
+											"}"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{APPID_APPLICATION_NAME}}\"\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/applications",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"applications"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/applications/{id}",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "17b65a37-4523-4e92-9504-f320e6279307",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"type": "text",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"name\": \"{{APPID_APPLICATION_NAME}}\"\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/applications/{{APPID_APPLICATION_CLIENT_ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"applications",
+										"{{APPID_APPLICATION_CLIENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/applications/{id}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/applications/{{APPID_APPLICATION_CLIENT_ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"applications",
+										"{{APPID_APPLICATION_CLIENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/applications/{id}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/applications/{{APPID_APPLICATION_CLIENT_ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"applications",
+										"{{APPID_APPLICATION_CLIENT_ID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Instance Configuration",
+					"item": [
+						{
+							"name": "/config/tokens",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/tokens",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"tokens"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/tokens",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"access\": {\n        \"expires_in\": 3601\n    },\n    \"refresh\": {\n        \"enabled\": false,\n        \"expires_in\": 2592001\n    },\n    \"anonymousAccess\": {\n        \"expires_in\": 2592001\n    }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/tokens",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"tokens"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/redirect_uris",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/redirect_uris",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"redirect_uris"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/redirect_uris",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"redirectUris\": [\n        \"http://localhost:3000\",\n        \"http://localhost:9080/oidcclient/redirect/15d331cd-9acd-4346-9424-83e941ce37bd\"\n    ]\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/redirect_uris",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"redirect_uris"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/users_profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/users_profile",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"users_profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/users_profile",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/users_profile",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"users_profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/ui",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/ui",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"ui"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/ui/theme_color",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/ui/theme_color",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"ui",
+										"theme_color"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/ui/theme_color",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"headerColor\": \"#EEF2F6\"\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/ui/theme_color",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"ui",
+										"theme_color"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/ui/media",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/ui/media",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"ui",
+										"media"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/ui/media",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "file",
+											"type": "file",
+											"src": ""
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/ui/media?mediaType=logo",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"ui",
+										"media"
+									],
+									"query": [
+										{
+											"key": "mediaType",
+											"value": "logo"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/saml_metadata",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/saml_metadata",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"saml_metadata"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/templates/{templateName}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/templates/WELCOME",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"templates",
+										"WELCOME"
+									]
+								},
+								"description": "supported values for {templateName}: USER_VERIFICATION, WELCOME, PASSWORD_CHANGED, RESET_PASSWORD"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/templates/{templateName}",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"subject\": \"Welcome %{user.displayName} 123aaa\",\n    \"html_body\": \"<!DOCTYPE html PUBLIC \\\"-//W3C//DTD XHTML 1.0 Transitional//EN\\\" \\\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\\\">\\n<html xmlns=\\\"http://www.w3.org/1999/xhtml\\\">\\n <head> \\n <meta http-equiv=\\\"Content-Type\\\" content=\\\"text/html; charset=UTF-8\\\"> \\n <title>mail template</title> \\n </head> \\n <body> \\n <span style=\\\"text-align: center\\\"></span> \\n <table width=\\\"100%\\\" border=\\\"0\\\" align=\\\"center\\\" cellpadding=\\\"10\\\" cellspacing=\\\"0\\\" style=\\\"font-family:Gotham, 'Helvetica Neue', Helvetica, Arial, sans-serif; font-size:16px; color:#464646\\\"> \\n <tbody> \\n <tr> \\n <td align=\\\"center\\\" valign=\\\"middle\\\" bgcolor=\\\"%{display.headerColor}\\\"><img src=\\\"%{display.logo}\\\" style=\\\"object-fit:contain\\\" height=\\\"77\\\" alt=\\\"logo\\\"></td> \\n </tr> \\n <tr> \\n <td align=\\\"center\\\"><strong> Hi %{user.firstName}</strong><br> <br> It's great to meet you! <br> <br> Thank you for signing up!<br><br> </td> \\n </tr> \\n <tr> \\n <td bgcolor=\\\"#9F9F9F\\\"></td> \\n </tr> \\n </tbody> \\n </table> \\n </body>\\n</html>\"\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/templates/WELCOME",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"templates",
+										"WELCOME"
+									]
+								},
+								"description": "supported values for {templateName}: USER_VERIFICATION, WELCOME, PASSWORD_CHANGED, RESET_PASSWORD"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/templates/{templateName}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/templates/WELCOME",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"templates",
+										"WELCOME"
+									]
+								},
+								"description": "supported values for {templateName}: USER_VERIFICATION, WELCOME, PASSWORD_CHANGED, RESET_PASSWORD"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/sender_details",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/sender_details",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"sender_details"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/sender_details",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"senderDetails\": {\n    \"from\": {\n      \"name\": \"no-reply\",\n      \"email\": \"no-reply@appid.bluemix.net\"\n    },\n    \"reply_to\": {\n      \"name\": \"Reply-to\",\n      \"email\": \"reply-to@example.com\"\n    },\n    \"linkExpirationSec\": 86400\n  }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/sender_details",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"sender_details"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/actions_urls",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/actions_urls",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"actions_urls"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/action_url/{action}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/action_url/on_user_verified",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"action_url",
+										"on_user_verified"
+									]
+								},
+								"description": "supported values for {action}: on_user_verified, on_reset_password"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/action_url/{action}",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/action_url/on_user_verified",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"action_url",
+										"on_user_verified"
+									]
+								},
+								"description": "supported values for {action}: on_user_verified, on_reset_password"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/action_url/{action}",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "actionUrl",
+											"value": "http://some-url.com",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/action_url/on_user_verified",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"action_url",
+										"on_user_verified"
+									]
+								},
+								"description": "supported values for {action}: on_user_verified, on_reset_password"
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/password_regex",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/password_regex",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"password_regex"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/cloud_directory/password_regex",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"regex\": \".*[a-z].*\",\n    \"error_message\": \"The password must contain at least 1 lowercase alphabetical character\"\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/cloud_directory/password_regex",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"cloud_directory",
+										"password_regex"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Identity Providers",
+					"item": [
+						{
+							"name": "/config/idps",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/facebook",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/facebook",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"facebook"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/facebook",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"isActive\": true,\n  \"config\": {\n    \"idpId\": \"\",\n    \"secret\": \"\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/facebook",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"facebook"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/google",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/google",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"google"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/google",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"isActive\": true,\n  \"config\": {\n    \"idpId\": \"\",\n    \"secret\": \"\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/google",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"google"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/cloud_directory",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/cloud_directory",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"cloud_directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/cloud_directory",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"isActive\": true,\n    \"config\": {\n    \t\"identityField\": \"email\",\n        \"selfServiceEnabled\": true,\n        \"signupEnabled\": true,\n        \"interactions\": {\n            \"identityConfirmation\": {\n                \"accessMode\": \"FULL\",\n                \"methods\": [\n                    \"email\"\n                ]\n            },\n            \"welcomeEnabled\": true,\n            \"resetPasswordEnabled\": true,\n            \"resetPasswordNotificationEnable\": true\n        }\n    }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/cloud_directory",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"cloud_directory"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/saml",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/saml",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"saml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/saml",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"config\": {\n        \"entityID\": \"entity-id\",\n        \"signInUrl\": \"https://sign-in-url.com\",\n        \"certificates\": [\"MIIDWjCCAkKgAwIBAgIGAWIHtGGGMA....\"],\n        \"displayName\": \"SAML IDP\"\n    },\n    \"isActive\": true\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/saml",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"saml"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/custom",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/custom",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"custom"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/config/idps/custom",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"isActive\": true,\n  \"config\": {\n  \t\"publicKey\": \"-----BEGIN PUBLIC KEY-----\\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvrf3v6jCIhTsCWaUsrpO\\n6oyzq48DfilyoNAdFE5HzZykVS5OWsZuU4wUgRRmw1XCQjOEmH2San7vLtMcJzmg\\n9 etc etc etc -----END PUBLIC KEY-----\"\n  }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/config/idps/custom",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"config",
+										"idps",
+										"custom"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Recent Authentications",
+					"item": [
+						{
+							"name": "/recent_authentications",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/recent_authentications",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"recent_authentications"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Cloud Directory Users",
+					"item": [
+						{
+							"name": "/cloud_directory/Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "922ee321-3369-41e1-8723-b282a297b134",
+										"type": "text/javascript",
+										"exec": [
+											"pm.response.json().Resources.forEach(function(user){",
+											"    user.emails.forEach(function(email){",
+											"        if (email.value == pm.environment.get(\"APPID_CLOUDDIR_USER_EMAIL\")){",
+											"            pm.environment.set(\"APPID_CLOUDDIR_USER_GUID\", user.id);        ",
+											"        }",
+											"    })",
+											"});",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/Users",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"Users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cloud_directory/Users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "ea4057f3-a324-497b-819c-9358bdafb784",
+										"type": "text/javascript",
+										"exec": [
+											"var cloudDirUserGuid = pm.response.json().id;",
+											"pm.environment.set(\"APPID_CLOUDDIR_USER_GUID\", cloudDirUserGuid);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"displayName\": \"Test User\",\n  \"password\": \"{{APPID_CLOUDDIR_PASSWORD}}\",\n  \"emails\": [\n    {\n      \"value\": \"{{APPID_CLOUDDIR_USER_EMAIL}}\",\n      \"primary\": true\n    }\n  ],\n  \"roles\": [\n  \t{ \"value\" : \"role1\" }, \n  \t{ \"value\" : \"role2\" }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/Users",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"Users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cloud_directory/Users/{userid}",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/Users/{{APPID_CLOUDDIR_USER_GUID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"Users",
+										"{{APPID_CLOUDDIR_USER_GUID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cloud_directory/Users/{userid}",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"displayName\": \"Test User123\",\n  \"password\": \"{{APPID_CLOUDDIR_PASSWORD}}\",\n  \"emails\": [\n    {\n      \"value\": \"{{APPID_CLOUDDIR_USER_EMAIL}}\",\n      \"primary\": true\n    }\n  ],\n  \"roles\": [\n  \t{ \"value\" : \"role1\" }, \n  \t{ \"value\" : \"role2\" }\n  ]\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/Users/{{APPID_CLOUDDIR_USER_GUID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"Users",
+										"{{APPID_CLOUDDIR_USER_GUID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/cloud_directory/Users/{userid}",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/Users/{{APPID_CLOUDDIR_USER_GUID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"Users",
+										"{{APPID_CLOUDDIR_USER_GUID}}"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "1f3432fc-f432-4587-ad46-9dc0911ba5e3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "feb33558-77a4-48e2-a4ed-f0737036e590",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Users",
+					"item": [
+						{
+							"name": "/users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "6a0a87c0-3f53-493e-a5fc-4511308d8e07",
+										"type": "text/javascript",
+										"exec": [
+											"var appidUUID = pm.response.json().users[0].id;",
+											"pm.environment.set(\"APPID_USER_UUID\", appidUUID);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users?email={{APPID_CLOUDDIR_USER_EMAIL}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users"
+									],
+									"query": [
+										{
+											"key": "email",
+											"value": "{{APPID_CLOUDDIR_USER_EMAIL}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/users",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5c03db61-69e9-44f8-9039-59cb8cc29f8e",
+										"type": "text/javascript",
+										"exec": [
+											"var appidUUID = pm.response.json().id;",
+											"pm.environment.set(\"APPID_USER_UUID\", appidUUID);"
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"idp\": \"cloud_directory\",\n  \"idp-identity\": \"{{APPID_CLOUDDIR_USER_EMAIL}}\",\n  \"profile\": {\n    \"attributes\": {\n      \"points\": \"111\"\n    }\n  }\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/users/{userid}",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4fb30447-9876-4edb-8e9b-e32dd4c4206b",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users/{{APPID_USER_UUID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users",
+										"{{APPID_USER_UUID}}"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/users/{userid}/revoke_refresh_token",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "4fb30447-9876-4edb-8e9b-e32dd4c4206b",
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users/{{APPID_USER_UUID}}/revoke_refresh_token",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users",
+										"{{APPID_USER_UUID}}",
+										"revoke_refresh_token"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/users/{userid}/profile",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users/{{APPID_USER_UUID}}/profile",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users",
+										"{{APPID_USER_UUID}}",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/users/{userid}/profile",
+							"request": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n\t\"attributes\": {\n\t\t\"test\": 12345\n\t}\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/users/{{APPID_USER_UUID}}/profile",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"users",
+										"{{APPID_USER_UUID}}",
+										"profile"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{IBMCLOUD_IAM_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "63aa4e63-b457-4e97-a74d-90ffeee79390",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "e922d52d-d59e-4886-8fa0-d88c42f5d4b9",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "OAuth2/OIDC",
+			"item": [
+				{
+					"name": "Authorization Code Grant",
+					"item": [
+						{
+							"name": "/authorization response_type=code",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "9e426ca3-1bc2-451b-85d4-008c1b079de6",
+										"type": "text/javascript",
+										"exec": [
+											"var host = pm.environment.get(\"APPID_AUTH_SERVER_HOST\");",
+											"var clientid = pm.environment.get(\"APPID_CLIENT_ID\");",
+											"var tenantid = pm.environment.get(\"APPID_TENANT_ID\");",
+											"console.log(host + \"/oauth/v3/\" + tenantid + \"/authorization?client_id=\" + clientid + \"&redirect_uri=http://localhost:3000/asd&scope=openid&response_type=code\");",
+											"",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/authorization?client_id={{APPID_CLIENT_ID}}&redirect_uri=http://localhost:3000/asd&scope=openid&response_type=code",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"authorization"
+									],
+									"query": [
+										{
+											"key": "client_id",
+											"value": "{{APPID_CLIENT_ID}}"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:3000/asd"
+										},
+										{
+											"key": "scope",
+											"value": "openid"
+										},
+										{
+											"key": "response_type",
+											"value": "code"
+										}
+									]
+								},
+								"description": "Postman console will print the URL. Open that URL in your browser and login. After successful login you'll get a redirect to localhost:3000 with \"code\" query param. Copy that param and use it in the next request (/token grant_type=code)"
+							},
+							"response": []
+						},
+						{
+							"name": "/token grant_type=code",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "5883a7dd-8e05-4057-a7d7-53fb61ef3806",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"APPID_ACCESS_TOKEN\", jsonData.access_token);",
+											"pm.environment.set(\"APPID_ID_TOKEN\", jsonData.id_token);",
+											"pm.environment.set(\"APPID_REFRESH_TOKEN\", jsonData.refresh_token);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "grant_type",
+											"value": "authorization_code",
+											"type": "text"
+										},
+										{
+											"key": "code",
+											"value": "ZU3CgkfCsnfCi8KSflkGwprDm8Oiw5QOEl0cwqIwWGtWwpPCnxXCnMKBCsK0w5fCjlt6wrUiwrrCm8OEFR9swrp8NMKKwqXDoGc0wqLCjHM7w77DrcKtIcOfZcK8wpYWwpV-w6bDiMK_dcKfB8OsGsOKw6LDtMKYZGxAV8Oyw6hSbcKkRjfCq8KzwprCuhDCr1pSPMOHGDgjwq7DjMOKWcOrwqs4P8KVwqDCpwAtwpIUPsOXwooEdVNacMOoehgiw4PDssK7XzhOw4fDrMOMMcK0w6TCq17DnQzCoMKww5fCvV3Dj3PCo1FxwrPCogtbw5gew5csTEDDtMObwr7CrMKERsOtAEQ1wpfDmsODQ8Kow6fDjcKPwqDDisKewozDmzcIw6VA",
+											"type": "text"
+										},
+										{
+											"key": "redirect_uri",
+											"value": "http://localhost:3000/asd",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/token",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Resource Owner Password Grant",
+					"item": [
+						{
+							"name": "/token grant_type=password",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "fb3b3443-5796-4c63-b7d0-73cc1e6cc255",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"APPID_ACCESS_TOKEN\", jsonData.access_token);",
+											"pm.environment.set(\"APPID_ID_TOKEN\", jsonData.id_token);",
+											"pm.environment.set(\"APPID_REFRESH_TOKEN\", jsonData.refresh_token);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "grant_type",
+											"value": "password",
+											"type": "text"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLOUDDIR_USER_EMAIL}}",
+											"type": "text"
+										},
+										{
+											"key": "password",
+											"value": "{{APPID_CLOUDDIR_PASSWORD}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/token",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b1724896-9639-45cf-a588-274c6c3a01f1",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e6f5d80-3e9d-417d-8b16-e3b88e4a20a3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Client Credentials Grant",
+					"item": [
+						{
+							"name": "/token grant_type=client_credentials",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "e2e195da-84df-4e20-8ca0-7e3e2ae3053c",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"APPID_ACCESS_TOKEN\", jsonData.access_token);",
+											"pm.environment.set(\"APPID_ID_TOKEN\", jsonData.id_token);",
+											"pm.environment.set(\"APPID_REFRESH_TOKEN\", jsonData.refresh_token);",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"name": "Content-Type",
+										"value": "application/x-www-form-urlencoded",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "grant_type",
+											"value": "client_credentials",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/token",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "b1724896-9639-45cf-a588-274c6c3a01f1",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "0e6f5d80-3e9d-417d-8b16-e3b88e4a20a3",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Custom Identity",
+					"item": [
+						{
+							"name": "/token grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "7051b2d1-3fa0-4413-a154-f22884d24098",
+										"type": "text/javascript",
+										"exec": [
+											"var jsonData = pm.response.json();",
+											"pm.environment.set(\"APPID_ACCESS_TOKEN\", jsonData.access_token);",
+											"pm.environment.set(\"APPID_ID_TOKEN\", jsonData.id_token);",
+											"pm.environment.set(\"APPID_REFRESH_TOKEN\", jsonData.refresh_token);",
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "grant_type",
+											"value": "urn:ietf:params:oauth:grant-type:jwt-bearer",
+											"type": "text"
+										},
+										{
+											"key": "assertion",
+											"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbnRvbmFAdXMuaWJtLmNvbSIsImlzcyI6Ik15QXdlc29tZUFwcCIsImF1ZCI6ImFwcGlkLW9hdXRoLm5nLmJsdWVtaXgubmV0IiwiZXhwIjoxNTYwNTQ5MzEwLCJuYW1lIjoiQW50b24iLCJyb2xlIjoiYXJjaGl0ZWN0IiwiZW1wSWQiOiI0RzYzNTYifQ.MsFDES-R37UBPc4QmsceAJzRkzGWf50sAVe6FBXxLFwVAU2cl6WTdmVvtyONSCQyz6uSxvqRFLTwUC9t8ilpZPUWF-8db4AezYnDmXP4zJXlm82BVHQRiBqk8nhN8mmjhiyVSQA4QoKfACCeFdgAsIBz2SK6QEvhAmBMr1AttyaiYYOLGFoCRy-XRYJ9mCsKvSFvc-XvCl6mX0iuLCO9d-U9Q5Cvnb-0x2zJ8rn9hoJd62tEP_8r6cQdilWNYGnsXFoq4py9vLsztW71KwXOz7XfiPCdhE4MCmvyFrRFQiGuXylQGndJTRmDDAAB9-T-ON-GHojogKGKKxXerlSOvA",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/token",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"token"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "9bd9ef57-efe6-4cb6-8cff-2e978b85ff11",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "7af2fe26-12ae-4724-b02b-e515f61d0a29",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "UserInfo",
+					"item": [
+						{
+							"name": "/userinfo",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bcbc6460-a65a-4139-97c4-d2ec130f84c8",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "bearer",
+									"bearer": [
+										{
+											"key": "token",
+											"value": "{{APPID_ACCESS_TOKEN}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/userinfo",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"userinfo"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Public Keys",
+					"item": [
+						{
+							"name": "/publickey",
+							"event": [
+								{
+									"listen": "prerequest",
+									"script": {
+										"id": "9aefbd4f-c188-4216-a4d7-5697ec3a0ad2",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/publickey",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"publickey"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/publickeys",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/publickeys",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"publickeys"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"id": "aeb5940b-c55f-4ef0-a774-38faa117d293",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"id": "92f06cb7-f84d-4bf9-aadf-90f28e0cebce",
+								"type": "text/javascript",
+								"exec": [
+									""
+								]
+							}
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Introspection",
+					"item": [
+						{
+							"name": "/introspect access_token",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "{{APPID_ACCESS_TOKEN}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/introspect",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"introspect"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "/introspect id_token",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "token",
+											"value": "{{APPID_ID_TOKEN}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/introspect",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"introspect"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				},
+				{
+					"name": "Revoke Refresh Token",
+					"item": [
+						{
+							"name": "/revoke",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"id": "bcbc6460-a65a-4139-97c4-d2ec130f84c8",
+										"type": "text/javascript",
+										"exec": [
+											""
+										]
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "{{APPID_SECRET}}",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "{{APPID_CLIENT_ID}}",
+											"type": "string"
+										}
+									]
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/x-www-form-urlencoded"
+									}
+								],
+								"body": {
+									"mode": "urlencoded",
+									"urlencoded": [
+										{
+											"key": "token",
+											"value": "{{APPID_REFRESH_TOKEN}}",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_AUTH_SERVER_HOST}}/oauth/v3/{{APPID_TENANT_ID}}/revoke",
+									"host": [
+										"{{APPID_AUTH_SERVER_HOST}}"
+									],
+									"path": [
+										"oauth",
+										"v3",
+										"{{APPID_TENANT_ID}}",
+										"revoke"
+									]
+								}
+							},
+							"response": []
+						}
+					],
+					"_postman_isSubFolder": true
+				}
+			]
+		},
+		{
+			"name": "User Profiles (runtime API for attributes)",
+			"item": [
+				{
+					"name": "/attributes",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APPID_PROFILES_SERVER_HOST}}/api/v1/attributes",
+							"host": [
+								"{{APPID_PROFILES_SERVER_HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/attributes/{attributeName}",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APPID_PROFILES_SERVER_HOST}}/api/v1/attributes/test_attribute_name",
+							"host": [
+								"{{APPID_PROFILES_SERVER_HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"test_attribute_name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/attributes/{attributeName}",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "test_attribute_value"
+						},
+						"url": {
+							"raw": "{{APPID_PROFILES_SERVER_HOST}}/api/v1/attributes/test_attribute_name",
+							"host": [
+								"{{APPID_PROFILES_SERVER_HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"test_attribute_name"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "/attributes/{attributeName}",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{APPID_PROFILES_SERVER_HOST}}/api/v1/attributes/test_attribute_name",
+							"host": [
+								"{{APPID_PROFILES_SERVER_HOST}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"attributes",
+								"test_attribute_name"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"auth": {
+				"type": "bearer",
+				"bearer": [
+					{
+						"key": "token",
+						"value": "{{APPID_ACCESS_TOKEN}}",
+						"type": "string"
+					}
+				]
+			},
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "d05673eb-22d9-48dd-9f5d-f364d44cbd6a",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "4495c0ed-06f1-406a-983c-6ab7a51b4035",
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "87d8056c-6590-4edf-bcb7-31f29a2ba70b",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "6ed2d966-8491-459c-b367-506d354b58af",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
