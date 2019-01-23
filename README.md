@@ -1,6 +1,6 @@
 # IBM Cloud App ID Postman Collection
 
-This repo contains a Postman collectoin and environment configuration for invoking REST API of the IBM Coud App ID service. 
+This repo contains a Postman collection and environment configuration for invoking REST API of the IBM Coud App ID service. 
 
 ## Set-up
 
