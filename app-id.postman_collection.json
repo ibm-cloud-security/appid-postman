@@ -1463,6 +1463,344 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "cloud_directory/export/all",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"pm.environment.set(\"ID\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n  \"emailAddress\": \"enter email address here\",\n  \"encryptionSecret\": \"enter encryptionSecret here\",\n  \"expires\": 1\n}"
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/export/all",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"export",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cloud_directory/export/status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/export/status?id={{ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"export",
+										"status"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cloud_directory/export/download",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"",
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/export/download?id={{ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"export",
+										"download"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cloud_directory/export/download",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/export/download?id={{ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"export",
+										"download"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cloud_directory/import/all",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"var jsonData = JSON.parse(responseBody);",
+											"pm.environment.set(\"ID\", jsonData.id);"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "POST",
+								"header": [
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "emailAddress",
+											"value": "enter email address",
+											"type": "text"
+										},
+										{
+											"key": "encryptionSecret",
+											"value": "enter encryptionSecret",
+											"type": "text"
+										},
+										{
+											"key": "file",
+											"type": "file",
+											"src": []
+										}
+									]
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/import/all",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"import",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "cloud_directory/import/status",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											""
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"protocolProfileBehavior": {
+								"disableBodyPruning": true
+							},
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json",
+										"type": "text"
+									},
+									{
+										"key": "Accept",
+										"value": "application/json",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": {
+									"raw": "{{APPID_MANAGEMENT_SERVER_HOST}}/management/v4/{{APPID_TENANT_ID}}/cloud_directory/import/status?id={{ID}}",
+									"host": [
+										"{{APPID_MANAGEMENT_SERVER_HOST}}"
+									],
+									"path": [
+										"management",
+										"v4",
+										"{{APPID_TENANT_ID}}",
+										"cloud_directory",
+										"import",
+										"status"
+									],
+									"query": [
+										{
+											"key": "id",
+											"value": "{{ID}}"
+										}
+									]
+								}
+							},
+							"response": []
 						}
 					],
 					"event": [
