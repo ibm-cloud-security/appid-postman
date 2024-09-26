@@ -2474,7 +2474,7 @@
 												},
 												{
 													"key": "assertion",
-													"value": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJhbnRvbmFAdXMuaWJtLmNvbSIsImlzcyI6Ik15QXdlc29tZUFwcCIsImF1ZCI6ImFwcGlkLW9hdXRoLm5nLmJsdWVtaXgubmV0IiwiZXhwIjoxNTYwNTQ5MzEwLCJuYW1lIjoiQW50b24iLCJyb2xlIjoiYXJjaGl0ZWN0IiwiZW1wSWQiOiI0RzYzNTYifQ.MsFDES-R37UBPc4QmsceAJzRkzGWf50sAVe6FBXxLFwVAU2cl6WTdmVvtyONSCQyz6uSxvqRFLTwUC9t8ilpZPUWF-8db4AezYnDmXP4zJXlm82BVHQRiBqk8nhN8mmjhiyVSQA4QoKfACCeFdgAsIBz2SK6QEvhAmBMr1AttyaiYYOLGFoCRy-XRYJ9mCsKvSFvc-XvCl6mX0iuLCO9d-U9Q5Cvnb-0x2zJ8rn9hoJd62tEP_8r6cQdilWNYGnsXFoq4py9vLsztW71KwXOz7XfiPCdhE4MCmvyFrRFQiGuXylQGndJTRmDDAAB9-T-ON-GHojogKGKKxXerlSOvA",
+													"value": "<Insert valid JWT Token Here>",
 													"type": "text"
 												}
 											]
