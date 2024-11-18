@@ -54,7 +54,7 @@
 							]
 						},
 						"url": {
-							"raw": "{{IBMCLOUD_IAM_SERVER_HOST}}/oidc/token",
+							"raw": "{{IBMCLOUD_IAM_SERVER_HOST}}/identity/token",
 							"host": [
 								"{{IBMCLOUD_IAM_SERVER_HOST}}"
 							],
